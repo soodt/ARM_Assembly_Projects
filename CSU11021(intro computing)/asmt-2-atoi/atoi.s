@@ -1,0 +1,155 @@
+  .syntax unified
+  .cpu cortex-m4
+  .thumb
+  .global  Main
+
+Main:
+  
+  @ Follow the instructions in the handout for Assignment 2
+
+  CMP R5, #10
+  BEQ DECIMAL
+  CMP R5, #2
+  BEQ BINARY
+  CMP R5, #8
+  BEQ OCTAL
+  CMP R5, #16
+  BEQ HEXADECIMAL
+  
+
+
+  DECIMAL:
+
+  MOV R6,#10      @STORING THE VALUES OF 10,100,100 TO BE MULTIPLIED LATER
+  MOV R7,#100
+  MOV R8,#1000
+
+  SUB R1, R1, #0X30    @CONVERTING FROM ASCII TO INTEGER
+  SUB R2, R2, #0X30
+  SUB R3, R3, #0X30
+  SUB R4, R4, #0X30
+
+  MUL R2, R2, R6       @MULTIPLYING THE DIGITS TO THEIR TENS,HUNDRENDS AND
+  MUL R3, R3, R7       @THOUSANDS PLACE
+  MUL R4, R4, R8
+
+  MOV R0,R1            @ADDING ALL THE VALUES TO GET THE FINAL RESULT
+  ADD R0,R0,R2
+  ADD R0,R0,R3
+  ADD R0,R0,R4
+  
+  B END
+
+
+BINARY:
+
+ MOV R6, #8           @@STORING THE VALUES OF 10,100,100 TO BE MULTIPLIED LATER
+ MOV R7, #4
+ MOV R8, #2
+
+ SUB R1, R1, #0X30    @CONVERTING FROM ASCII TO BINARY
+ SUB R2, R2, #0X30
+ SUB R3, R3, #0X30
+ SUB R4, R4, #0X30
+
+ MUL R2,R2,R8
+ MUL R3,R3,R7
+ MUL R4,R4,R6
+
+ MOV R0,R1
+ ADD R0,R0,R2
+ ADD R0,R0,R3
+ ADD R0,R0,R4
+
+ B END
+
+OCTAL:
+
+ MOV R6, #8           
+ MOV R7, #64
+ MOV R8, #512
+
+ SUB R1, R1, #0X30    
+ SUB R2, R2, #0X30
+ SUB R3, R3, #0X30
+ SUB R4, R4, #0X30
+
+ MUL R2,R2,R6
+ MUL R3,R3,R7
+ MUL R4,R4,R8
+
+ MOV R0,R1
+ ADD R0,R2
+ ADD R0,R3
+ ADD R0,R4
+
+ B END
+  
+HEXADECIMAL:
+
+ MOV R6,#65
+ MOV R7,#7
+
+ START:
+
+ CMP R1,R6
+ BGE HEXA1
+ CMP R2,R6
+ BGE HEXA2
+ CMP R3,R6
+ BGE HEXA3
+ CMP R4,R6
+ BGE HEXA4
+
+ B MAIN
+
+ HEXA1:
+
+ SUB R1,R1,R7
+ B START
+
+ HEXA2:
+
+ SUB R2,R2,R7
+ B START
+
+ HEXA3:
+
+ SUB R3,R3,R7
+ B START
+
+ HEXA4:
+
+ SUB R4,R4,R7
+ B START
+
+
+ MAIN:
+
+ SUB R1, R1, #0X30    
+ SUB R2, R2, #0X30
+ SUB R3, R3, #0X30
+ SUB R4, R4, #0X30
+
+ MOV R6, #16
+ MOV R7, #256
+ MOV R8, #4096
+
+ MUL R2,R2,R6
+ MUL R3,R3,R7
+ MUL R4,R4,R8
+
+ MOV R0,R1
+ ADD R0,R2
+ ADD R0,R3
+ ADD R0,R4
+
+
+
+  
+
+
+  @ End of program ... check your result
+END:
+End_Main:
+  BX    lr
